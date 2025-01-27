@@ -17,7 +17,7 @@ A: This is multiplayer safe as long as every human player has `YRAggressiveStanc
 
 Q: Can I make a modified build of `YRAggressiveStance.dll`?
 
-A: Of course. Just make sure every human player has the exactly same `YRAggressiveStance.dll` installed, or the game will end in a desync.
+A: Of course. Just make sure every human player has the identical `YRAggressiveStance.dll` installed, or the game will end in a desync. I am not responsible if someone tries to cheat in a multiplayer game using a modified build of `YRAggressiveStance.dll`, the same trick can be used on any open-source extension, even `Phobos.dll`.
 
 Q: Do you take feature requests?
 
