@@ -14,3 +14,11 @@ A: Follow the steps.
 Q: Is it safe to use it in multiplayer games?
 
 A: This is multiplayer safe as long as every human player has `YRAggressiveStance.dll` installed. If **any** human player did not install `YRAggressiveStance.dll`, any attempt to make use of the Aggressive Stance will lead to a desync. **This extension CANNOT be used as a cheat.**
+
+Q: Can I make a modified build of `YRAggressiveStance.dll`?
+
+A: Of course. Just make sure every human player has the exactly same `YRAggressiveStance.dll` installed, or the game will end in a desync.
+
+Q: Do you take feature requests?
+
+A: Sorry, I don't.
