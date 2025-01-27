@@ -1,32 +1,28 @@
-# Prerequisites
-*.d
+Release
+Debug
+*.vcxproj.user
+*.vcxproj.filters
+*.sdf
+*.suo
+.vs
+.cproject
+.project
+*.aps
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+Nightly/
 
-# Precompiled Headers
-*.gch
-*.pch
+DevBuild/
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+docs/_build/
+docs/locale/.doctrees/
+*.pot
+*.mo
 
-# Fortran module files
-*.mod
-*.smod
+/.vscode/c_cpp_properties.json
+/.vscode/cspell.json
+/.vscode/settings.json
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
+build
+cmake-*
+out
+.idea
