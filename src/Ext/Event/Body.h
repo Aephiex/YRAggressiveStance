@@ -11,7 +11,7 @@ enum class EventTypeExt : uint8_t
 	// CnCNet reserved Events from 0x30 to 0x3F
 	// Ares used Events 0x60 and 0x61
 
-	ToggleAggressiveStance = 0x80,
+	ToggleAggressiveStance = 0xff,
 
 	FIRST = ToggleAggressiveStance,
 	LAST = ToggleAggressiveStance
