@@ -3,7 +3,7 @@
 #include <Helpers/Macro.h>
 #include <EventClass.h>
 #include <HouseClass.h>
-#include "../Techno/Body.h"
+#include <Commands/AggressiveStance.h>
 
 bool EventExt::AddEvent()
 {
@@ -32,8 +32,15 @@ void EventExt::RaiseToggleAggressiveStance(TechnoClass* pTechno)
 
 void EventExt::RespondToToggleAggressiveStance()
 {
-	if (const auto pTechnoExt = TechnoExt::ExtMap.Find(this->ToggleAggressiveStance.Who.As_Techno()))
-		pTechnoExt->ToggleAggressiveStance();
+	auto const pTechno = this->ToggleAggressiveStance.Who.As_Techno();
+
+	if (AggressiveStanceClass::AggressiveStanceMap[pTechno]) {
+		AggressiveStanceClass::AggressiveStanceMap[pTechno] = false;
+		pTechno->QueueMission(Mission::Guard, true);
+		pTechno->SetTarget(nullptr);
+	} else {
+		AggressiveStanceClass::AggressiveStanceMap[pTechno] = true;
+	}
 }
 
 size_t EventExt::GetDataSize(EventTypeExt type)

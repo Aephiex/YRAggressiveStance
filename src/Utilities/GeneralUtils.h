@@ -11,8 +11,6 @@
 #include <vector>
 #include <string>
 
-#include "Template.h"
-
 #define MIN(x) std::numeric_limits<x>::min()
 #define MAX(x) std::numeric_limits<x>::max()
 

@@ -1,9 +1,10 @@
 #include "AggressiveStance.h"
-#include "Ext/Techno/Body.h"
 #include <EventClass.h>
 #include <HouseClass.h>
 #include <Ext/Event/Body.h>
 #include <Utilities/GeneralUtils.h>
+
+std::map<TechnoClass*, bool> AggressiveStanceClass::AggressiveStanceMap;
 
 const char* AggressiveStanceClass::GetName() const
 {
@@ -35,6 +36,21 @@ static inline const wchar_t* GetToggleOffPopupMessage()
 	return GeneralUtils::LoadStringUnlessMissing("MSG:AGGRESSIVE_STANCE_OFF", L"%i unit(s) ceased Aggressive Stance.");
 }
 
+static inline bool CanToggleAggressiveStance(TechnoClass* pTechno) {
+	if (!(pTechno->IsArmed() || pTechno->GetTechnoType()->OpenTopped))
+	{
+		return false;
+	}
+	if (auto pInfantryTypeClass = abstract_cast<InfantryTypeClass*>(pTechno->GetTechnoType()))
+	{
+		if (pInfantryTypeClass->Engineer || pInfantryTypeClass->Agent)
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
 void AggressiveStanceClass::Execute(WWKey eInput) const
 {
 	std::vector<TechnoClass*> TechnoVectorAggressive;
@@ -55,20 +71,17 @@ void AggressiveStanceClass::Execute(WWKey eInput) const
 			continue;
 
 		// If not togglable then exclude it from the iteration.
-		if (auto pTechnoExt = TechnoExt::ExtMap.Find(pTechno))
+		if (CanToggleAggressiveStance(pTechno))
 		{
-			if (pTechnoExt->CanToggleAggressiveStance())
+			isAnySelectedUnitTogglable = true;
+			if (AggressiveStanceClass::AggressiveStanceMap[pTechno])
 			{
-				isAnySelectedUnitTogglable = true;
-				if (pTechnoExt->GetAggressiveStance())
-				{
-					TechnoVectorAggressive.push_back(pTechno);
-				}
-				else
-				{
-					isAllSelectedUnitAggressiveStance = false;
-					TechnoVectorNonAggressive.push_back(pTechno);
-				}
+				TechnoVectorAggressive.push_back(pTechno);
+			}
+			else
+			{
+				isAllSelectedUnitAggressiveStance = false;
+				TechnoVectorNonAggressive.push_back(pTechno);
 			}
 		}
 	}
@@ -95,29 +108,22 @@ void AggressiveStanceClass::Execute(WWKey eInput) const
 			EventExt::RaiseToggleAggressiveStance(pTechno);
 
 			auto pTechnoType = pTechno->GetTechnoType();
-			auto pTechnoTypeExt = TechnoTypeExt::ExtMap.Find(pTechnoType);
-			int voiceIndex;
+			int voiceIndex = 0;
 
-			if (isAllSelectedUnitAggressiveStance)
+			if (!isAllSelectedUnitAggressiveStance)
 			{
-				voiceIndex = pTechnoTypeExt->VoiceExitAggressiveStance.Get();
-			}
-			else
-			{
-				voiceIndex = pTechnoTypeExt->VoiceEnterAggressiveStance.Get();
-				if (voiceIndex < 0)
+				TypeList<int> voiceList = pTechnoType->VoiceAttack.Count ? pTechnoType->VoiceAttack : pTechnoType->VoiceMove;
+				if (voiceList.Count)
 				{
-					TypeList<int> voiceList = pTechnoType->VoiceAttack.Count ? pTechnoType->VoiceAttack : pTechnoType->VoiceMove;
-					if (voiceList.Count)
-					{
-						unsigned int idxRandom = Randomizer::Global().Random();
-						auto index = idxRandom % voiceList.Count;
-						voiceIndex = voiceList.GetItem(index);
-					}
+					unsigned int idxRandom = Randomizer::Global().Random();
+					auto index = idxRandom % voiceList.Count;
+					voiceIndex = voiceList.GetItem(index);
 				}
 			}
 
-			pTechno->QueueVoice(voiceIndex);
+			if (voiceIndex > 0) {
+				pTechno->QueueVoice(voiceIndex);
+			}
 		}
 		wchar_t buffer[0x1000];
 		wsprintfW(buffer, Message, TechnoVector.size());
