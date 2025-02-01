@@ -11,7 +11,7 @@ DEFINE_HOOK(0x6F858F, TechnoClass_EvaluateObject_AggressiveStance, 0x7)
 	if (pThis && pThis->Owner->IsControlledByHuman()
 		&& pTarget && pTarget->WhatAmI() == AbstractType::Building)
 	{
-		if (AggressiveStanceClass::AggressiveStanceMap[pThis]) {
+		if (AggressiveStanceClass::AggressiveStanceMap[pThis] || (pThis->Transporter && AggressiveStanceClass::AggressiveStanceMap[pThis->Transporter])) {
 			return 0x6F88BF;
 		}
 	}
