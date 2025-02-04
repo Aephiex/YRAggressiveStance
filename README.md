@@ -1,6 +1,8 @@
 # YRAggressiveStance
 An engine extension that enables Aggressive Stance for Yuri's Revenge.
 
+Also available at Nexus Mods: [https://www.nexusmods.com/commandandconquerredalert2/mods/143](https://www.nexusmods.com/commandandconquerredalert2/mods/143).
+
 # FAQ
 
 Q: How to use it?
